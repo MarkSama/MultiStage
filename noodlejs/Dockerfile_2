@@ -1,0 +1,33 @@
+
+
+
+
+FROM node:23.3.0-bookworm AS build
+
+RUN npm config set proxy http://10.0.0.2:3128
+RUN npm config set https-proxy http://10.0.0.2:3128
+
+COPY ./noodlejs.js /app/noodle.js
+
+COPY ./package.json /app/package.json
+
+WORKDIR /app
+
+RUN npm install
+
+#-----------------------------------
+
+FROM node:23.3.0-bookworm-slim
+
+COPY --from=build /app/node_modules /app/node_modules
+
+COPY --from=build /app/noodle.js /app
+
+COPY --from=build /app/*.json /app
+
+WORKDIR /app
+
+EXPOSE 8080
+
+CMD ["npm","start"]
+

@@ -1,0 +1,14 @@
+
+FROM mysql:latest
+
+ADD dnf.conf /etc/dnf/dnf.conf
+
+# RUN export http_proxy=10.0.0.2:3128
+# RUN export https_proxy=10.0.0.2:3128
+
+RUN microdnf install mc -y
+
+ENV MYSQL_ROOT_PASSWORD=576803Abc?
+
+EXPOSE 3306
+

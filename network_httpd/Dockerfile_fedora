@@ -1,0 +1,13 @@
+#
+# docker network
+#
+
+
+
+FROM fedora:latest
+
+ADD dnf.conf /etc/dnf/dnf.conf
+
+RUN dnf install iputils mc mysql -y
+
+CMD ["/bin/bash"]

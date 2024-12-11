@@ -1,0 +1,35 @@
+# Multistage build
+# stage 1 build
+#
+# docker pull 1.23.3-bookworm
+# docker build -t mygolang:v1 .
+#
+#
+#
+#
+FROM golang:1.23.3-bookworm AS build
+
+COPY dnf.conf /etc/dnf/dnf.conf
+
+COPY ./golangwebapp/* /golangwebapp/
+
+WORKDIR /golangwebapp
+
+RUN go build
+
+# stage 2 running
+#
+# docker build -t groun:v1 .
+#
+#
+
+FROM kalilinux/kali-rolling
+
+COPY --from=build /golangwebapp/webappdemo /app/webappdemo
+
+WORKDIR /app
+
+EXPOSE 8080
+
+CMD ["./webappdemo"]
+
